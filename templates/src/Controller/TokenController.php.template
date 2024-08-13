@@ -1,0 +1,53 @@
+<?php
+
+namespace DefesaCivil\Controller;
+
+use DateTime;
+use DefesaCivil\Entity\Token;
+use DefesaCivil\Entity\Usuario;
+use Firebase\JWT\JWT;
+
+class TokenController extends Controller{
+    public function __construct()
+    {
+        parent::__construct(Token::class);
+    }
+
+    public function gerarToken($usuario_id) 
+    {
+        $chave_secreta = 'secret_key'; // Substitua pela sua chave secreta real
+        $token_data = array(
+            "usuario_id" => $usuario_id,
+            "exp" => time() + 3600 // Tempo de expiração do token (1 hora)
+        );
+        
+        $token = JWT::encode($token_data, $chave_secreta, 'HS256');
+        $usuario = $this->eM->getRepository(Usuario::class)->find($usuario_id);
+
+        $this->eM->persist(new Token($usuario, $token));
+        $this->eM->flush();
+        
+        return $token;
+    }
+
+    public function verificaSeAtivo($parametro)
+    {
+        $token = $this->repositorio->findOneBy(['token' => $parametro]);
+        if(!is_null($token)){
+            if($token->getValidade()->diff(new DateTime())->days >= 1){
+                $this->responder(["ativo" => false]);    
+                exit();
+            }
+            $this->responder(["ativo" => !is_null($token) && $token->isAtivo()]);
+        }
+        $this->responder(["ativo" => false]);
+    }
+
+    public function logout($token) : void 
+    {
+        $token = $this->repositorio->findOneBy(['token' => $token]);
+        $token->setAtivo(false);
+        $this->eM->flush();
+        $this->responder(['token' => '']);
+    }
+}

@@ -1,0 +1,8 @@
+<?php
+include_once "UsersSeeder.php";
+
+echo "\nSeeding 'users' table\n";
+$migration = new UsersSeeder();
+$migration->run();
+
+echo "\nSeeding complete.\n";

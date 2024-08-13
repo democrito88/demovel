@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Controller;
+
+interface InterfaceController{
+    public function listar();
+    public function mostrar(int $id);
+    public function criar(array $parametros): void;
+    public function atualizar(array $parametros): void;
+    public function remover(): void;
+}

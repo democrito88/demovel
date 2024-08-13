@@ -44,7 +44,9 @@ class CreateProjectCommand extends Command
         $filesystem->mkdir($projectDir . '/tests');
 
         // Create basic files
-        $filesystem->dumpFile($projectDir . '/src/index.php', '<?php echo "Hello World!";' . PHP_EOL);
+        $filesystem->dumpFile($projectDir . '.env', file_get_contents('./../../templates/.env.template'));
+        $filesystem->dumpFile($projectDir . '.htaccess', file_get_contents('./../../templates/.htaccess.template'));
+        $filesystem->dumpFile($projectDir . '/src/public/index.php', file_get_contents('./../../templates/public/index.php.template'));
         $filesystem->dumpFile($projectDir . '/composer.json', json_encode([
             "name" => "your-vendor/" . strtolower($projectName),
             "require" => new \stdClass(),
@@ -54,6 +56,12 @@ class CreateProjectCommand extends Command
                 ]
             ]
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        $filesystem->dumpFile($projectDir . '/src/Provider/EntityServiceProvider.php', file_get_contents('./../../templates/src/Provider/EntityServiceProvider.php.template'));
+        $filesystem->dumpFile($projectDir . '/src/Entity/User.php', file_get_contents('./../../templates/src/Entity/User.php.template'));
+        $filesystem->dumpFile($projectDir . '/src/Entity/Token.php', file_get_contents('./../../templates/src/Entity/Token.php.template'));
+        $filesystem->dumpFile($projectDir . '/src/Controller/InterfaceController.php', file_get_contents('./../../templates/src/Controller/InterfaceController.php.template'));
+        $filesystem->dumpFile($projectDir . '/src/Controller/Controller.php', file_get_contents('./../../templates/src/Controller/Controller.php.template'));
+        $filesystem->dumpFile($projectDir . '/src/Controller/UserController.php', file_get_contents('./../../templates/src/Controller/UserController.php.template'));
 
         $output->writeln('<info>Project created successfully.</info>');
         return Command::SUCCESS;

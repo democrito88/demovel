@@ -1,0 +1,129 @@
+<?php
+
+namespace DefesaCivil\Entity;
+
+use DateTime;
+use Doctrine\ORM\Mapping\{Id,
+GeneratedValue, Column, Entity, JoinColumn, ManyToOne, Table};
+
+#[Entity]
+#[Table(name: 'tokens')]
+class Token{
+
+    #[Id]
+    #[Column(type: 'integer')]
+    #[GeneratedValue]
+    private int | null $id = null;
+
+    #[ManyToOne(targetEntity: Usuario::class, cascade: ['ALL'], inversedBy:"usuarios")]
+    #[JoinColumn(name: 'idUsuario', referencedColumnName: 'id')]
+    private Usuario $usuario;
+
+    #[Column(type: 'string')]
+    private string $token;
+
+    #[Column(type: 'boolean')]
+    private bool $ativo;
+
+    #[Column(type: 'datetime')]
+    private DateTime $validade;
+
+
+    public function __construct(
+        Usuario $usuario,
+        string $token,
+        int $id = 0,
+        bool $ativo = true
+    ){
+
+        $this->id = $id;
+        $this->usuario = $usuario;
+        $this->token = $token;
+        $this->ativo = $ativo;
+        $this->validade = (new DateTime())->modify('+1 day');
+
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     */
+    public function setId($id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+   
+    public function getUsuario(): Usuario
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * Set the value of usuario
+     */
+    public function setUsuario($usuario): self
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * Set the value of id
+     */
+    public function setToken($token): self
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of ativo
+     */
+    public function isAtivo(): bool
+    {
+        return $this->ativo;
+    }
+
+    /**
+     * Set the value of ativo
+     */
+    public function setAtivo(bool $ativo): self
+    {
+        $this->ativo = $ativo;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of validade
+     */
+    public function getValidade(): DateTime
+    {
+        return $this->validade;
+    }
+
+    /**
+     * Set the value of validade
+     * @param DateTime $validade
+     */
+    public function setValidade(DateTime $validade): self
+    {
+        $this->validade = $validade;
+
+        return $this;
+    }
+}

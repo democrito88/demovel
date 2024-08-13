@@ -1,0 +1,339 @@
+<?php
+
+namespace App\Entity;
+
+use DateTime;
+use Doctrine\ORM\Mapping\{
+    Entity,
+    Id,
+    GeneratedValue,
+    Column,
+    ManyToOne,
+    Table
+};
+
+#[Entity]
+#[Table(name: "users")]
+class Users
+{
+
+    #[Id]
+    #[GeneratedValue]
+    #[Column(type: "integer")]
+    private int $id;
+
+    #[Column(type: "string")]
+    private String $name;
+
+    #[Column(type: "string")]
+    private String $code;
+
+    #[Column(type: "string")]
+    private String $email;
+
+    #[Column(type: "string")]
+    private String $password;
+
+    #[Column(type: "string")]
+    private String | null $tokenResetPassword;
+
+    #[Column(type: "datetime")]
+    private DateTime | null $validateTokenResetPassword;
+
+    #[Column(type: "integer")]
+    private int $profile;
+
+    #[Column(type: "boolean")]
+    private bool $active;
+
+    public function __construct(
+        $name,
+        $code,
+        $email,
+        $password,
+        $profile,
+        $id = 0,
+        $active = true
+    ) {
+
+        $this->id = $id;
+        $this->name = $name;
+        $this->code = $code;
+        $this->email = $email;
+        $this->password = $password;
+        $this->tokenResetPassword = null;
+        $this->validateTokenResetPassword = null;
+        $this->profile = $profile;
+        $this->active = $active;
+    }
+
+    /**
+     * Get the value of id
+     *
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @param int $id
+     *
+     * @return self
+     */
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of name
+     *
+     * @return String
+     */
+    public function getName(): String
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @param String $name
+     *
+     * @return self
+     */
+    public function setName(String $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of code
+     *
+     * @return String
+     */
+    public function getCode(): String
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set the value of code
+     *
+     * @param String $code
+     *
+     * @return self
+     */
+    public function setCode(String $code): self
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of email
+     *
+     * @return String
+     */
+    public function getEmail(): String
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set the value of email
+     *
+     * @param String $email
+     *
+     * @return self
+     */
+    public function setEmail(String $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of password
+     *
+     * @return String
+     */
+    public function getPassword(): String
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set the value of password
+     *
+     * @param String $password
+     *
+     * @return self
+     */
+    public function setPassword(String $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profile
+     *
+     * @return int
+     */
+    public function getProfile(): int
+    {
+        return $this->profile;
+    }
+
+    /**
+     * Retorna o profile do usuário
+     * por extenso
+     * 0 - administrador
+     * 1 - atendente
+     * 2 - triagem
+     * 3 - técnico
+     * @return string $profile
+     */
+    public function getProfileExtended(): string
+    {
+        switch ($this->getProfile()) {
+            case 0:
+                $porExtended =  'administrador';
+                break;
+            case 1:
+                $porExtended =  'atendente';
+                break;
+            case 2:
+                $porExtended =  'triagem';
+                break;
+            case 3:
+                $porExtended =  'técnico';
+                break;
+            default:
+                $porExtended =  '';
+                break;
+        }
+
+        return $porExtended;
+    }
+
+    /**
+     * Retorna a rota para a página font-end
+     * relativa a 'home' do profile do usuário
+     * @return string $pagina
+     */
+    public function getPage(): string
+    {
+        switch ($this->profile) {
+            case 0:
+                return '/administrador';
+                break;
+            case 1:
+                return '/atendente';
+                break;
+            case 2:
+                return '/triagem';
+                break;
+            case 3:
+                return '/team//'.$this->getTeam()->getId();
+                break;
+            default:
+                return '';
+                break;
+        }
+    }
+
+    /**
+     * Set the value of profile
+     *
+     * @param int $profile
+     *
+     * @return self
+     */
+    public function setProfile(int $profile): self
+    {
+        $this->profile = $profile;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of active
+     *
+     * @return bool
+     */
+    public function getAtivo(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set the value of active
+     *
+     * @param bool $active
+     *
+     * @return self
+     */
+    public function setAtivo(bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    public function getTokenResetPassword(): string
+    {
+        return $this->tokenResetPassword;
+    }
+
+    public function setTokenresetPassword(string $tokenResetPassword): void
+    {
+        $this->tokenResetPassword = $tokenResetPassword;
+    }
+
+    public function getValidadeTokenResetPassword(): DateTime
+    {
+        return $this->validateTokenResetPassword;
+    }
+
+    public function setValidadeTokenResetPassword(DateTime $validateTokenResetPassword): void
+    {
+        $this->validateTokenResetPassword = $validateTokenResetPassword;
+    }
+
+    public function __toString(): string
+    {
+        return '{
+            "id": ' . $this->id . ',
+            "name": ' . $this->name . ',
+            "code": ' . $this->code . ',
+            "email": ' . $this->email . ',
+            "profile": ' . $this->profile . ',
+            "active": ' . $this->active . '
+        }';
+    }
+
+    public function toJson(): array
+    {
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "code" => $this->code,
+            "email" => $this->email,
+            "profile" => $this->profile,
+            "active" => $this->active
+        ];
+    }
+}

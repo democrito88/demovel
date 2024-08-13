@@ -1,0 +1,7 @@
+<?php
+$router = new Router();
+
+// Define routes
+//$router->addRoute('GET', '/entity', 'App\Controller\AnyController@getMethodName');
+//$router->addRoute('GET', '/entity/(\d+)', 'App\Controller\AnyController@getMethodWithParameterName');
+//$router->addRoute('POST', '/entity/anyRoute', 'App\Controller\AnyController@postMethodName');

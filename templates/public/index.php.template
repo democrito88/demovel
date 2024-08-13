@@ -1,0 +1,10 @@
+<?php
+header("Access-Control-Allow-Origin: *"); // Replace * with the specific origin(s) you want to allow.
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header('Content-Type: application/json'); 
+
+require __DIR__ . '/../routes/router.php';
+require __DIR__ . '/../routes/routes.php';
+
+$router->handleRequest($_REQUEST);

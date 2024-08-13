@@ -1,0 +1,10 @@
+<?php
+include_once "CreateUsersTable.php";
+
+echo "\nMigrating 'users table\n";
+$migration = new CreateUsersTable();
+$migration->down();
+$migration->up();
+
+
+echo "\nMigration Completed.\n";

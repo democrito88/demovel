@@ -1,0 +1,11 @@
+<?php
+
+class Seeder{
+    protected $db;
+    
+    public function __construct()
+    {
+        // Connect to the SQLite database (or create it if it doesn't exist)
+        $this->db = new SQLite3(__DIR__.'/../database.sqlite');
+    }
+}

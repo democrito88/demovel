@@ -1,0 +1,47 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Usuario;
+
+class UsuarioController extends Controller{
+
+    public function __construct()
+    {
+        parent::__construct(Usuario::class);
+    }
+
+    public function criar(array $parametros): void
+    {
+        $senhaEncriptada = password_hash($parametros['senha'], PASSWORD_BCRYPT);
+        $usuario = new Usuario($parametros['nome'], $parametros['cpf'], $parametros['email'], $senhaEncriptada, $parametros['perfil'], $parametros['equipe']);
+        $this->eM->persist($usuario);
+        $this->eM->flush();
+        LogController::registraLog("Registrou-se um novo usuário: ".$usuario->getNome());
+    }
+
+    public function atualizar(array $parametros): void
+    {
+        $usuario = $this->repositorio->find($parametros);
+        if(!is_null($usuario)){
+            $usuario->setNome($parametros['nome']);
+            $usuario->setCpf($parametros['cpf']);
+            $usuario->setEmail($parametros['email']);
+            $usuario->setSenha($parametros['senha']);
+            $usuario->setPerfil($parametros['perfil']);
+            $usuario->setAtivo($parametros['ativo']);
+            $eC = new EquipeController();
+            $equipe = $eC->repositorio->find($parametros['idEquipe']);
+            $usuario->setEquipe($equipe);
+
+            $this->repositorio->flush();
+            LogController::registraLog("Atualizou-se um usuário de id: ".$usuario->getId());
+        }
+    }
+
+    public function remover(): void
+    {
+
+    }
+
+}

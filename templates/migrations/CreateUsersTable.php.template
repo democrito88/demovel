@@ -1,0 +1,37 @@
+<?php
+include_once "CreateTable.php";
+
+class CreateUsersTable extends CreateTable
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
+    
+    public function up()
+    {
+        // Create the "users" table
+        $query = 'CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            code TEXT NOT NULL,
+            email TEXT NOT NULL,
+            password TEXT NOT NULL,
+            tokenResetPassword TEXT,
+            expireTokenResetPassword DATETIME,
+            profile INTEGER NOT NULL,
+            active BOOLEAN NOT NULL,
+            team_id INTEGER,
+            FOREIGN KEY (team_id) REFERENCES teams(team_id)
+        ON DELETE CASCADE
+        )';
+
+        $this->db->exec($query);
+    }
+
+    public function down()
+    {
+        $query = 'DROP TABLE IF EXISTS users;';
+        var_dump($this->db->exec($query));
+    }
+}

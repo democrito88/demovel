@@ -1,0 +1,82 @@
+<?php
+include_once "Seeder.php";
+
+class UsersSeeder extends Seeder
+{
+    public function run()
+    {
+        $inputs = [
+            [
+                'name' => "Fulano de Tal",
+                'code' => "00000000000",
+                'email' => "fulano@mail.com",
+                'password' => password_hash("123", PASSWORD_BCRYPT),
+                'profile' => 0,
+                'active' => true,
+                'team_id' => 1
+            ],
+            [
+                'name' => "Beltrano de tal",
+                'code' => "00000000000",
+                'email' => "beltrano@mail.com",
+                'password' => password_hash("123", PASSWORD_BCRYPT),
+                'profile' => 1,
+                'active' => true,
+                'team_id' => 2
+            ],
+            [
+                'name' => "Cicrano de tal",
+                'code' => "00000000000",
+                'email' => "cicrano@mail.com",
+                'password' => password_hash("123", PASSWORD_BCRYPT),
+                'profile' => 2,
+                'active' => true,
+                'team_id' => 3
+            ],
+            [
+                'name' => "Luiz Ferreira",
+                'code' => "00000000000",
+                'email' => "nando1176@hotmail.com",
+                'password' => password_hash("123", PASSWORD_BCRYPT),
+                'profile' => 3,
+                'active' => true,
+                'team_id' => 3
+            ],
+            [
+                'name' => "Guilherme Marciana Maranhão",
+                'code' => "00000000000",
+                'email' => "ghenrike97@gmail.com",
+                'password' => password_hash("123", PASSWORD_BCRYPT),
+                'profile' => 0,
+                'active' => true,
+                'team_id' => 3
+                
+            ],
+            [
+                'name' => " Luis Augusto",
+                'code' => "00000000000",
+                'email' => "devluis@tutamail.com",
+                'password' => password_hash("123", PASSWORD_BCRYPT),
+                'profile' => 0,
+                'active' => true,
+                'team_id' => 3
+            ]
+        ];
+
+        // Insert a sample user
+        foreach ($inputs as $input) {
+            $insertQuery = 'INSERT INTO users (name, code, email, password, profile, active, team_id) 
+            VALUES (:name, :code, :email, :password, :profile, :active, :team_id)';
+            $stmt = $this->db->prepare($insertQuery);
+            $stmt->bindParam(':name', $input['name']);
+            $stmt->bindParam(':code', $input['code']);
+            $stmt->bindParam(':email', $input['email']);
+            $stmt->bindParam(':password', $input['password']);
+            $stmt->bindParam(':profile', $input['profile']);
+            $stmt->bindParam(':active', $input['active']);
+            $stmt->bindParam(':team_id', $input['team_id']);
+
+            $stmt->execute();
+        }
+    }
+}
