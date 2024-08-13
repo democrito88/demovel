@@ -1,0 +1,37 @@
+{
+    "name": "democrito88/demovel",
+    "description": "Library that create a structure of a simple PHP project on MVC achitecture.",
+    "type": "library",
+    "version": "0.0.1",
+    "require": {
+        "doctrine/orm": "^2.16",
+        "doctrine/dbal": "^3.2",
+        "doctrine/annotations": "^1.0",
+        "symfony/yaml": "*",
+        "symfony/cache": "^6.3",
+        "firebase/php-jwt": "^6.8",
+        "phpmailer/phpmailer": "^6.8",
+        "doctrine/migrations": "^3.6",
+        "symfony/flex": "^2.4",
+        "symfony/filesystem": "7.2.x-dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "Localizacoes\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "democrito88",
+            "email": "d_who@hotmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "bin": ["bin/console"]
+}
