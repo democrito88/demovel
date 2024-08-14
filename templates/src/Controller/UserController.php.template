@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\User;
+
+class UserController extends Controller{
+
+    public function __construct()
+    {
+        parent::__construct(User::class);
+    }
+
+    public function criar(array $parameters): void
+    {
+        $encryptedPassword = password_hash($parameters['password'], PASSWORD_BCRYPT);
+        $user = new User($parameters['name'], $parameters['code'], $parameters['email'], $encryptedPassword, $parameters['profile']);
+        $this->eM->persist($user);
+        $this->eM->flush();
+    }
+
+    public function atualizar(array $parameters): void
+    {
+        $user = $this->repository->find($parameters);
+        if(!is_null($user)){
+            $user->setName($parameters['name']);
+            $user->setCode($parameters['code']);
+            $user->setEmail($parameters['email']);
+            $user->setPassword($parameters['password']);
+            $user->setProfile($parameters['profile']);
+            $user->setActive($parameters['active']);
+            $this->repository->flush();
+        }
+    }
+
+    public function remover(): void
+    {
+
+    }
+
+}

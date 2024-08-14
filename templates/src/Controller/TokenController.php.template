@@ -1,10 +1,10 @@
 <?php
 
-namespace DefesaCivil\Controller;
+namespace App\Controller;
 
 use DateTime;
-use DefesaCivil\Entity\Token;
-use DefesaCivil\Entity\Usuario;
+use App\Entity\Token;
+use App\Entity\User;
 use Firebase\JWT\JWT;
 
 class TokenController extends Controller{
@@ -13,41 +13,41 @@ class TokenController extends Controller{
         parent::__construct(Token::class);
     }
 
-    public function gerarToken($usuario_id) 
+    public function gerarToken($user_id) 
     {
-        $chave_secreta = 'secret_key'; // Substitua pela sua chave secreta real
+        $secret_key = 'secret_key'; // Replace for your secret key
         $token_data = array(
-            "usuario_id" => $usuario_id,
-            "exp" => time() + 3600 // Tempo de expiração do token (1 hora)
+            "user_id" => $user_id,
+            "exp" => time() + 3600 // this token expires in 1 hour
         );
         
-        $token = JWT::encode($token_data, $chave_secreta, 'HS256');
-        $usuario = $this->eM->getRepository(Usuario::class)->find($usuario_id);
+        $token = JWT::encode($token_data, $secret_key, 'HS256');
+        $user = $this->eM->getRepository(User::class)->find($user_id);
 
-        $this->eM->persist(new Token($usuario, $token));
+        $this->eM->persist(new Token($user, $token));
         $this->eM->flush();
         
         return $token;
     }
 
-    public function verificaSeAtivo($parametro)
+    public function isActive($parameter)
     {
-        $token = $this->repositorio->findOneBy(['token' => $parametro]);
+        $token = $this->repository->findOneBy(['token' => $parameter]);
         if(!is_null($token)){
-            if($token->getValidade()->diff(new DateTime())->days >= 1){
-                $this->responder(["ativo" => false]);    
+            if($token->getExpire()->diff(new DateTime())->days >= 1){
+                $this->send(["active" => false]);    
                 exit();
             }
-            $this->responder(["ativo" => !is_null($token) && $token->isAtivo()]);
+            $this->send(["active" => !is_null($token) && $token->isActive()]);
         }
-        $this->responder(["ativo" => false]);
+        $this->send(["active" => false]);
     }
 
     public function logout($token) : void 
     {
-        $token = $this->repositorio->findOneBy(['token' => $token]);
-        $token->setAtivo(false);
+        $token = $this->repository->findOneBy(['token' => $token]);
+        $token->setActive(false);
         $this->eM->flush();
-        $this->responder(['token' => '']);
+        $this->send(['token' => '']);
     }
 }

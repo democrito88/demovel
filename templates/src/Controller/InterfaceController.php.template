@@ -3,9 +3,9 @@
 namespace App\Controller;
 
 interface InterfaceController{
-    public function listar();
-    public function mostrar(int $id);
-    public function criar(array $parametros): void;
-    public function atualizar(array $parametros): void;
-    public function remover(): void;
+    public function list();
+    public function show(int $id);
+    public function create(array $parameters): void;
+    public function update(array $parameters): void;
+    public function remove(): void;
 }

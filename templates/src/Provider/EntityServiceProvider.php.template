@@ -3,11 +3,15 @@ namespace App\Provider;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
+use Dotenv\Dotenv;
 
 class EntityManagerCreator{
 
     public static function createEntityManager(): EntityManager
     {
+        // Load the .env file
+        $dotenv = Dotenv::createImmutable(__DIR__.'../../.env');
+        $dotenv->load();
 
         $config = ORMSetup::createAttributeMetadataConfiguration
         (
@@ -16,8 +20,8 @@ class EntityManagerCreator{
         );
  
         $conn = [
-            'driver' => 'pdo_sqlite',
-            'path' => __DIR__ . '/../../database/database.sqlite',
+            'driver' => $_ENV['DB_DRIVE'],
+            'path' => __DIR__ . '/../../'.$_ENV['DB_PATH'],
         ];
 
 

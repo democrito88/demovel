@@ -14,7 +14,7 @@ class Router
         ];
     }
 
-    public function handleRequest(array | null $parametros)
+    public function handleRequest(array | null $parameters)
     {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             /*
@@ -64,7 +64,7 @@ class Router
             if (file_exists($controllerFile)) {
                 include_once($controllerFile);
                 // Cria uma instância do controller e chama a ação
-                $controller = 'DefesaCivil\Controller\\' . ucfirst($controller);
+                $controller = 'App\Controller\\' . ucfirst($controller);
                 $controllerInstance = new $controller();
                 
                 if (method_exists($controllerInstance, $action)) {
@@ -90,7 +90,7 @@ class Router
                     $controller = isset($segmentos[0]) ? $segmentos[0] : 'AuthController';
                     $action = isset($segmentos[1]) ? $segmentos[1] : 'login';
                     $instancia = new $controller();
-                    $instancia->$action($parametros);
+                    $instancia->$action($parameters);
                     http_response_code(200);
                     exit();
                 }

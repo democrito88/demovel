@@ -7,56 +7,56 @@ use App\Provider\EntityManagerCreator;
 class Controller implements InterfaceController
 {
     public $eM;
-    public $repositorio;
+    public $repository;
 
     public function __construct($entitdade)
     {
         $entityManager = new EntityManagerCreator();
         $this->eM = $entityManager->createEntityManager();
-        $this->repositorio = $this->eM->getRepository($entitdade);
+        $this->repository = $this->eM->getRepository($entitdade);
     }
 
-    public function listar()
+    public function list()
     {
-        $entidades = $this->repositorio->findAll();
+        $entidades = $this->repository->findAll();
         
         $formatadas = [];
         foreach($entidades as $entidade){
             $formatadas[] = $entidade->toJson();
         }
 
-        $this->responder($formatadas);
+        $this->send($formatadas);
     }
     
-    public function mostrar(int $id)
+    public function show(int $id)
     {
-        $this->responder($this->repositorio->find($id)->toJson());
+        $this->send($this->repository->find($id)->toJson());
     }
 
-    public function criar(array $parametros): void
+    public function create(array $parameters): void
+    {
+        
+    }
+
+    public function update(array $parameters): void
     {
 
     }
 
-    public function atualizar(array $parametros): void
-    {
-
-    }
-
-    public function remover(): void
+    public function remove(): void
     {
 
     }
 
     /**
-     * Função que recebe os parâmetros vindos de um formulário
-     * e um array com as regras de cada campo para validá-los
+     * Recieves data comming from a form
+     * and an array with rules of every field to validate them.
      * 
-     * @param array $inputData - ex: ['nome' => 'fulano', 'email' => 'fulano@mail.com', 'senha' => '123', 'ativo' => true]
-     * @param array $regras  - ex: ['nome' => 'string', 'email' => 'email', 'senha' => string, 'ativo' => 'boolean']
+     * @param array $inputData - ex: ['name' => 'fulano', 'email' => 'fulano@mail.com', 'password' => '123', 'active' => true]
+     * @param array $regras  - ex: ['name' => 'string', 'email' => 'email', 'password' => string, 'active' => 'boolean']
      * @return array
      */
-    public function validar(array $inputData, array $regras) : array
+    public function validate(array $inputData, array $regras) : array
     {
         // Define validation rules for each input field.
         $validationRules = array(
@@ -96,11 +96,11 @@ class Controller implements InterfaceController
     }
 
     /**
-     * Envia o json de resposta
-     * @param array $reposta
+     * Send a response json
+     * @param array $response
      */
-    public function responder(array $resposta) : void 
+    public function send(array $response) : void 
     {
-        echo json_encode($resposta);
+        echo json_encode($response);
     }
 }

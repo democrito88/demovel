@@ -9,12 +9,13 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class CreateProjectCommand extends Command
 {
-    protected static $defaultName = 'migrate';
+    protected static $defaultName = 'create:migration';
 
     protected function configure()
     {
         $this
-            ->setDescription('Migrates the migration classes');
+            ->setName('crate:migrate')
+            ->setDescription('Creates the migration main class');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -32,7 +33,7 @@ class CreateProjectCommand extends Command
         $filesystem->dumpFile($projectDir . '/database/migration/CreateUsersTable.php', file_get_contents('./../../templates/migrations/CreateUsersTable.php.template'));
         $filesystem->dumpFile($projectDir . '/database/migration/runMigrations.php', file_get_contents('./../../templates/migrations/runMigrations.php.template'));
 
-        $output->writeln('<info>Migration executed successfully.</info>');
+        $output->writeln('<info>Migration class created successfully.</info>');
         return Command::SUCCESS;
     }
 }

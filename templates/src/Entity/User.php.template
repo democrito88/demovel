@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\{
     Id,
     GeneratedValue,
     Column,
-    ManyToOne,
     Table
 };
 
@@ -200,33 +199,25 @@ class Users
     /**
      * Retorna o profile do usuário
      * por extenso
-     * 0 - administrador
-     * 1 - atendente
-     * 2 - triagem
-     * 3 - técnico
+     * 0 - administrator
+     * 1 - common
      * @return string $profile
      */
     public function getProfileExtended(): string
     {
         switch ($this->getProfile()) {
             case 0:
-                $porExtended =  'administrador';
+                $wholeName =  'administrator';
                 break;
             case 1:
-                $porExtended =  'atendente';
-                break;
-            case 2:
-                $porExtended =  'triagem';
-                break;
-            case 3:
-                $porExtended =  'técnico';
+                $wholeName =  'common';
                 break;
             default:
-                $porExtended =  '';
+                $wholeName =  '';
                 break;
         }
 
-        return $porExtended;
+        return $wholeName;
     }
 
     /**
@@ -238,16 +229,10 @@ class Users
     {
         switch ($this->profile) {
             case 0:
-                return '/administrador';
+                return '/administrator';
                 break;
             case 1:
-                return '/atendente';
-                break;
-            case 2:
-                return '/triagem';
-                break;
-            case 3:
-                return '/team//'.$this->getTeam()->getId();
+                return '/common';
                 break;
             default:
                 return '';
@@ -274,7 +259,7 @@ class Users
      *
      * @return bool
      */
-    public function getAtivo(): bool
+    public function getActive(): bool
     {
         return $this->active;
     }
@@ -286,7 +271,7 @@ class Users
      *
      * @return self
      */
-    public function setAtivo(bool $active): self
+    public function setActive(bool $active): self
     {
         $this->active = $active;
 
@@ -303,12 +288,12 @@ class Users
         $this->tokenResetPassword = $tokenResetPassword;
     }
 
-    public function getValidadeTokenResetPassword(): DateTime
+    public function getExpiresTokenResetPassword(): DateTime
     {
         return $this->validateTokenResetPassword;
     }
 
-    public function setValidadeTokenResetPassword(DateTime $validateTokenResetPassword): void
+    public function setExpiresTokenResetPassword(DateTime $validateTokenResetPassword): void
     {
         $this->validateTokenResetPassword = $validateTokenResetPassword;
     }

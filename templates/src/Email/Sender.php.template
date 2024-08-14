@@ -1,0 +1,53 @@
+<?php
+namespace App\Email;
+
+use App\Entity\User;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
+
+class Sender
+{
+    // Load the .env file as a static property
+    private static $dotenv;
+
+    // Constructor to initialize Dotenv
+    public function __construct()
+    {
+        self::$dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+        self::$dotenv->load();
+    }
+
+    public function enviarEmailResetSenha(User $user, string $subject, string $body, string $altBody = ""): void
+    {
+        // Send an email to the user with the password reset token
+        $mail = new PHPMailer();
+        $mail->isSMTP();
+        $mail->Host = $_ENV['EMAIL_HOST'];
+        $mail->SMTPAuth = true;
+        $mail->Username   = $_ENV['EMAIL_SENDER'];
+        $mail->Password   = $_ENV['EMAIL_PASSWORD'];
+        $mail->SMTPSecure = $_ENV['SMTP_SECURITY']; // Enable TLS encryption; `ssl` also accepted for secure connections
+        $mail->Port       = $_ENV['SMTP_PORT']; // TCP port to connect to
+        $mail->setFrom($_ENV['EMAIL_SENDER'], $_ENV['EMAIL_USERNAME']);
+        $mail->addAddress($user->getEmail(), $user->getNome());
+        $mail->isHTML(true);
+        $mail->CharSet = "utf-8";
+        $mail->Subject = $subject;
+        
+        $mail->Body    = $body;
+
+        $mail->AltBody = $altBody;
+
+        try {
+            $mail->send();
+        } catch (Exception $e) {
+            echo json_encode(['mensagem' => 'There\'s being an error trying to send your e-mail. Please, try again later.']);
+            exit;
+        }
+
+        // Email sent successfully
+        echo json_encode(['mensagem' => 'Email sent successfully!.']);
+        exit();
+    }
+}

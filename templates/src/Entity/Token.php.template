@@ -1,6 +1,6 @@
 <?php
 
-namespace DefesaCivil\Entity;
+namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping\{Id,
@@ -15,32 +15,32 @@ class Token{
     #[GeneratedValue]
     private int | null $id = null;
 
-    #[ManyToOne(targetEntity: Usuario::class, cascade: ['ALL'], inversedBy:"usuarios")]
-    #[JoinColumn(name: 'idUsuario', referencedColumnName: 'id')]
-    private Usuario $usuario;
+    #[ManyToOne(targetEntity: User::class, cascade: ['ALL'], inversedBy:"users")]
+    #[JoinColumn(name: 'idUser', referencedColumnName: 'id')]
+    private User $user;
 
     #[Column(type: 'string')]
     private string $token;
 
     #[Column(type: 'boolean')]
-    private bool $ativo;
+    private bool $active;
 
     #[Column(type: 'datetime')]
-    private DateTime $validade;
+    private DateTime $expires;
 
 
     public function __construct(
-        Usuario $usuario,
+        User $user,
         string $token,
         int $id = 0,
-        bool $ativo = true
+        bool $active = true
     ){
 
         $this->id = $id;
-        $this->usuario = $usuario;
+        $this->user = $user;
         $this->token = $token;
-        $this->ativo = $ativo;
-        $this->validade = (new DateTime())->modify('+1 day');
+        $this->active = $active;
+        $this->expires = (new DateTime())->modify('+1 day');
 
     }
 
@@ -59,17 +59,17 @@ class Token{
         return $this;
     }
    
-    public function getUsuario(): Usuario
+    public function getUser(): User
     {
-        return $this->usuario;
+        return $this->user;
     }
 
     /**
-     * Set the value of usuario
+     * Set the value of user
      */
-    public function setUsuario($usuario): self
+    public function setUser($user): self
     {
-        $this->usuario = $usuario;
+        $this->user = $user;
 
         return $this;
     }
@@ -91,38 +91,38 @@ class Token{
 
 
     /**
-     * Get the value of ativo
+     * Get the value of active
      */
-    public function isAtivo(): bool
+    public function isActive(): bool
     {
-        return $this->ativo;
+        return $this->active;
     }
 
     /**
-     * Set the value of ativo
+     * Set the value of active
      */
-    public function setAtivo(bool $ativo): self
+    public function setActive(bool $active): self
     {
-        $this->ativo = $ativo;
+        $this->active = $active;
 
         return $this;
     }
 
     /**
-     * Get the value of validade
+     * Get the value of expires
      */
-    public function getValidade(): DateTime
+    public function getExpires(): DateTime
     {
-        return $this->validade;
+        return $this->expires;
     }
 
     /**
-     * Set the value of validade
-     * @param DateTime $validade
+     * Set the value of expires
+     * @param DateTime $expires
      */
-    public function setValidade(DateTime $validade): self
+    public function setExpires(DateTime $expires): self
     {
-        $this->validade = $validade;
+        $this->expires = $expires;
 
         return $this;
     }
