@@ -32,15 +32,13 @@ class CreateProjectCommand extends Command
         }
 
         // Create project directories
-        $filesystem->mkdir($projectDir . '/database');
-        $filesystem->mkdir($projectDir . '/database/migration');
-        $filesystem->mkdir($projectDir . '/database/seed');
         $filesystem->mkdir($projectDir . '/public');
         $filesystem->mkdir($projectDir . '/src');
         $filesystem->mkdir($projectDir . '/src/Entity');
         $filesystem->mkdir($projectDir . '/src/Controller');
         $filesystem->mkdir($projectDir . '/src/Provider');
         $filesystem->mkdir($projectDir . '/src/Mail');
+        $filesystem->mkdir($projectDir . '/routes');
         $filesystem->mkdir($projectDir . '/tests');
 
         // Create basic files
@@ -54,14 +52,34 @@ class CreateProjectCommand extends Command
                 "psr-4" => [
                     "App\\" => "src/"
                 ]
-            ]
+            ],
+            "require" => [
+                "doctrine/orm"=> "^2.16",
+                "doctrine/dbal"=> "^3.2",
+                "doctrine/annotations"=> "^1.0",
+                "symfony/yaml"=> "*",
+                "symfony/cache"=> "^6.3",
+                "firebase/php-jwt"=> "^6.8",
+                "phpmailer/phpmailer"=> "^6.8",
+                "doctrine/migrations"=> "^3.6",
+                "symfony/flex"=> "^2.4",
+                "symfony/filesystem"=> "7.2.x-dev"
+            ],
+            "config" => [
+                "allow-plugins" => [
+                    "symfony/flex"=> true
+                ]
+            ],
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+        
         $filesystem->dumpFile($projectDir . '/src/Provider/EntityServiceProvider.php', file_get_contents('./../../templates/src/Provider/EntityServiceProvider.php.template'));
         $filesystem->dumpFile($projectDir . '/src/Entity/User.php', file_get_contents('./../../templates/src/Entity/User.php.template'));
         $filesystem->dumpFile($projectDir . '/src/Entity/Token.php', file_get_contents('./../../templates/src/Entity/Token.php.template'));
         $filesystem->dumpFile($projectDir . '/src/Controller/InterfaceController.php', file_get_contents('./../../templates/src/Controller/InterfaceController.php.template'));
         $filesystem->dumpFile($projectDir . '/src/Controller/Controller.php', file_get_contents('./../../templates/src/Controller/Controller.php.template'));
         $filesystem->dumpFile($projectDir . '/src/Controller/UserController.php', file_get_contents('./../../templates/src/Controller/UserController.php.template'));
+        $filesystem->dumpFile($projectDir . '/routes/routes.php', file_get_contents('./../../templates/routes/routes.php.template'));
+        $filesystem->dumpFile($projectDir . '/routes/router.php', file_get_contents('./../../templates/routes/router.php.template'));
 
         $output->writeln('<info>Project created successfully.</info>');
         return Command::SUCCESS;

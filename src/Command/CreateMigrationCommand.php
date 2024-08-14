@@ -23,6 +23,10 @@ class CreateProjectCommand extends Command
 
         $projectDir = getcwd() . '/';
 
+        //Create folders
+        $filesystem->mkdir($projectDir . '/database');
+        $filesystem->mkdir($projectDir . '/database/migration');
+
         // Create basic files
         $filesystem->dumpFile($projectDir . '/database/migration/CreateTable.php', file_get_contents('./../../templates/migrations/CreateTable.php.template'));
         $filesystem->dumpFile($projectDir . '/database/migration/CreateUsersTable.php', file_get_contents('./../../templates/migrations/CreateUsersTable.php.template'));
