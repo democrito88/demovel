@@ -24,7 +24,6 @@ class Router
             $requisicao = $_SERVER['PATH_INFO'];
             
             foreach($this->routes as $rota){
-                //explode('/', $rota['path'])[1] == explode('/', $requisicao)[1];
                 if (explode('/', $rota['path'])[1] == explode('/', $requisicao)[1]){
                     $segmentos = explode('@', $rota['handler']);
                     $controller = isset($segmentos[0]) ? $segmentos[0] : 'AuthController';
@@ -35,52 +34,6 @@ class Router
                     exit();
                 }
             }
-            /*$route = isset($_GET['route']) ? $_GET['route'] : '';
-            // rota '/' -> home
-            if (empty($route)) {
-                $route = 'home';
-            }
-
-            // Divide a rota em dois segmentos
-            $segments = explode('/', $route);
-            $rota = "";
-            
-            var_dump($_SERVER);
-            foreach($this->routes as $elemento){
-                if($elemento['path'] === '/'.$segments[1]){
-                    $rota = $elemento['handler'];
-                }
-            }
-
-            $fragmentos = explode("@", $rota);
-
-            // Extrai o controller, o método e os parâmetros (rota GET)
-            $controller = isset(explode('\\', $fragmentos[0])[2]) ? explode('\\', $fragmentos[0])[2] : 'AuthController';
-            $action = isset($fragmentos[1]) ? $fragmentos[1] : 'listar';
-            $parameter = isset($segments[2]) ? $segments[2] : null;
-            // Inclui o controller apropriado e executa a ação
-            $controllerFile = __DIR__ . '/../src/Controller/' . ucfirst($controller) . '.php';
-            
-            if (file_exists($controllerFile)) {
-                include_once($controllerFile);
-                // Cria uma instância do controller e chama a ação
-                $controller = 'App\Controller\\' . ucfirst($controller);
-                $controllerInstance = new $controller();
-                
-                if (method_exists($controllerInstance, $action)) {
-                    $controllerInstance->$action($parameter);
-                } else {
-                    // método não existe
-                    // Handle 404 - Route not found
-                    http_response_code(404);
-                    echo '404 Not Found';
-                }
-            } else {
-                // Controller não existe
-                // Handle 404 - Route not found
-                http_response_code(404);
-                echo '404 Not Found';
-            }*/
         } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $requisicao = $_SERVER['PATH_INFO'];
             

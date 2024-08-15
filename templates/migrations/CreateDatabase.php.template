@@ -1,0 +1,26 @@
+<?php
+require __DIR__."../../vendor/autoload.php";
+
+use Dotenv\Dotenv;
+use Symfony\Component\Filesystem\Filesystem;
+
+class CreateDatabase{
+    private $dotenv;
+    private Filesystem $filesystem;
+
+    public function __construct()
+    {
+        $this->dotenv = Dotenv::createImmutable(__DIR__ . '/../../');
+        $this->dotenv->load();
+        $this->filesystem = new Filesystem();
+    }
+
+    public function createDatabase($driver) : void 
+    {
+
+        if($_ENV['DB_DRIVE'] == 'php_sqlite'){
+            $databaseDir = __DIR__.'/../';
+            $this->filesystem->dumpFile($databaseDir . $_ENV['DB_NAME'] .'.sqlite');
+        }
+    }
+}
