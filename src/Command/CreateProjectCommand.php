@@ -2,6 +2,8 @@
 
 namespace Demovel\Command;
 
+require_once './src/config.php';
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,7 +27,7 @@ class CreateProjectCommand extends Command
         $projectName = $input->getArgument('name');
         $filesystem = new Filesystem();
 
-        $projectDir = getcwd() . '/' . $projectName.'/';
+        $projectDir = ROOT_PARENT_PATH.'/' . $projectName.'/'; //getcwd() . '/' . $projectName.'/';
 
         if ($filesystem->exists($projectDir)) {
             $output->writeln('<error>Project already exists.</error>');
@@ -76,9 +78,9 @@ class CreateProjectCommand extends Command
         $filesystem->dumpFile($projectDir . 'src/Provider/EntityServiceProvider.php', file_get_contents(__DIR__.'/../../templates/src/Provider/EntityServiceProvider.php.template'));
         $filesystem->dumpFile($projectDir . 'src/Entity/User.php', file_get_contents(__DIR__.'/../../templates/src/Entity/User.php.template'));
         $filesystem->dumpFile($projectDir . 'src/Entity/Token.php', file_get_contents(__DIR__.'/../../templates/src/Entity/Token.php.template'));
-        $filesystem->dumpFile($projectDir . 'src/Controller/InterfaceController.php', file_get_contents(__DIR__.'/../../templates/src/Controller/InterfaceController.php.template'));
-        $filesystem->dumpFile($projectDir . 'src/Controller/Controller.php', file_get_contents(__DIR__.'/../../templates/src/Controller/Controller.php.template'));
-        $filesystem->dumpFile($projectDir . 'src/Controller/UserController.php', file_get_contents(__DIR__.'/../../templates/src/Controller/UserController.php.template'));
+        $filesystem->dumpFile($projectDir . 'src/Controllers/InterfaceController.php', file_get_contents(__DIR__.'/../../templates/src/Controllers/InterfaceController.php.template'));
+        $filesystem->dumpFile($projectDir . 'src/Controllers/Controller.php', file_get_contents(__DIR__.'/../../templates/src/Controllers/Controller.php.template'));
+        $filesystem->dumpFile($projectDir . 'src/Controllers/UserController.php', file_get_contents(__DIR__.'/../../templates/src/Controllers/UserController.php.template'));
         $filesystem->dumpFile($projectDir . 'routes/routes.php', file_get_contents(__DIR__.'/../../templates/routes/routes.php.template'));
         $filesystem->dumpFile($projectDir . 'routes/router.php', file_get_contents(__DIR__.'/../../templates/routes/router.php.template'));
 
