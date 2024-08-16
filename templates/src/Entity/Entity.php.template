@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Mapping\{
+    Id,
+    GeneratedValue,
+    Column,
+    MappedSuperclass,
+    HasLifecycleCallbacks,
+    PrePersist,
+    PreUpdate
+};
+
+#[MappedSuperclass]
+#[HasLifecycleCallbacks]
+abstract class Entity
+{
+    #[Id]
+    #[GeneratedValue]
+    #[Column(type: "integer")]
+    protected $id;
+
+    #[Column(type: "datetime")]
+    protected $createdAt;
+
+    #[Column(type: "datetime")]
+    protected $updatedAt;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    #[PrePersist]
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
+    #[PreUpdate]
+    public function preUpdate(LifecycleEventArgs $args)
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Returns a JSON representation of the entity.
+     * 
+     * @return string
+     */
+    public function toJson(): string
+    {
+        $data = get_object_vars($this);
+        return json_encode($data, JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * Returns a string representation of the entity.
+     * Ovewrite this method to provide custom string output.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return sprintf(
+            '%s (ID: %d, Created At: %s, Updated At: %s)',
+            get_class($this),
+            $this->id,
+            $this->createdAt ? $this->createdAt->format('Y-m-d H:i:s') : 'N/A',
+            $this->updatedAt ? $this->updatedAt->format('Y-m-d H:i:s') : 'N/A'
+        );
+    }
+}

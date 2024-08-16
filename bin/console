@@ -7,6 +7,7 @@ use Symfony\Component\Console\Application;
 use Demovel\Command\{
     CreateProjectCommand,
     CreateControllerCommand,
+    CreateEntityCommand,
     CreateMailCommand,
     CreateMigrationCommand,
     CreateSeederCommand
@@ -15,6 +16,7 @@ use Demovel\Command\{
 $application = new Application();
 $application->add(new CreateProjectCommand());
 $application->add(new CreateControllerCommand());
+$application->add(new CreateEntityCommand());
 $application->add(new CreateMailCommand());
 $application->add(new CreateMigrationCommand());
 $application->add(new CreateSeederCommand());

@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Entity;
+
+use DateTime;
+use Doctrine\ORM\Mapping\{
+    Entity,
+    Id,
+    GeneratedValue,
+    Column,
+    Table
+};
+
+#[Entity]
+#[Table(name: "{{TABLE_NAME}}")]
+class {{CLASS_NAME}} extends Entity
+{
+
+    /**
+     * Consult https://www.doctrine-project.org/projects/doctrine-dbal/en/stable/reference/types.html#reference
+     * for type refefences
+     */
+    #[Column(type: "string")]
+    private String $propertie1;
+
+    /**
+    * A constructor is optional
+    */
+    public function __construct(
+        String $propertie1
+    ) {
+        $this->propertie1 = $propertie1;
+    }
+
+    /**
+     * Get the value of propertie1
+     *
+     * @return String
+     */
+    public function getPropertie1(): String
+    {
+        return $this->propertie1;
+    }
+
+    /**
+     * Set the value of propertie1
+     *
+     * @param String $propertie1
+     *
+     * @return self
+     */
+    public function setPropertie1(String $propertie1): self
+    {
+        $this->propertie1 = $propertie1;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return '{
+            "id": ' . $this->id . ',
+            "propertie1": ' . $this->propertie1 . '
+        }';
+    }
+}

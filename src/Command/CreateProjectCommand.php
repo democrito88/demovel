@@ -45,7 +45,10 @@ class CreateProjectCommand extends Command
         $filesystem->mkdir($projectDir . 'tests');
 
         // Create basic files
-        $filesystem->dumpFile($projectDir . '.env', file_get_contents(__DIR__.'/../../templates/.env.template'));
+        $env = file_get_contents(__DIR__.'/../../templates/.env.template');
+        $env = str_replace('{{APP_NAME}}', $projectName, $env);
+        $env = str_replace('{{DB_NAME}}', strtolower($projectName), $env);
+        $filesystem->dumpFile($projectDir . '.env', $env);
         $filesystem->dumpFile($projectDir . '.htaccess', file_get_contents(__DIR__.'/../../templates/.htaccess.template'));
         $filesystem->dumpFile($projectDir . 'public/index.php', file_get_contents(__DIR__.'/../../templates/public/index.php.template'));
         $filesystem->dumpFile($projectDir . 'composer.json', json_encode([
@@ -76,6 +79,7 @@ class CreateProjectCommand extends Command
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         
         $filesystem->dumpFile($projectDir . 'src/Provider/EntityServiceProvider.php', file_get_contents(__DIR__.'/../../templates/src/Provider/EntityServiceProvider.php.template'));
+        $filesystem->dumpFile($projectDir . 'src/Entity/Entity.php', file_get_contents(__DIR__.'/../../templates/src/Entity/Entity.php.template'));
         $filesystem->dumpFile($projectDir . 'src/Entity/User.php', file_get_contents(__DIR__.'/../../templates/src/Entity/User.php.template'));
         $filesystem->dumpFile($projectDir . 'src/Entity/Token.php', file_get_contents(__DIR__.'/../../templates/src/Entity/Token.php.template'));
         $filesystem->dumpFile($projectDir . 'src/Controllers/InterfaceController.php', file_get_contents(__DIR__.'/../../templates/src/Controllers/InterfaceController.php.template'));
