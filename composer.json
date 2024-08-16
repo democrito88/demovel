@@ -2,7 +2,7 @@
     "name": "democrito88/demovel",
     "description": "Library that create a structure of a simple PHP project on MVC achitecture.",
     "type": "library",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "require": {
         "doctrine/orm": "^2.16",
         "doctrine/dbal": "^3.2",

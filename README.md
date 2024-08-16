@@ -1,6 +1,6 @@
 # Demovel
 
-![Version](https://img.shields.io/badge/v0.0.1-fed000?style=for-the-badge)
+![Version](https://img.shields.io/badge/v0.1.0-fed000?style=for-the-badge)
 ![License](https://img.shields.io/badge/MIT-0ac18e?style=for-the-badge)
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
 ![Symfony](https://img.shields.io/badge/symfony-%23000000.svg?style=for-the-badge&logo=symfony&logoColor=white)
