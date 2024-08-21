@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Filesystem\Filesystem;
 
 class CreateProjectCommand extends Command
@@ -26,6 +27,18 @@ class CreateProjectCommand extends Command
     {
         $projectName = $input->getArgument('name');
         $filesystem = new Filesystem();
+
+        /** @var QuestionHelper $helper */
+        $helper = $this->getHelper('question');
+        $question = new Question('Would you like to define a database? [y/n]');
+        $databaseYN = $helper->ask($input, $output, $question);
+
+        if($databaseYN === 'y'){
+            $question = new Question('What is the name of the database?');
+            $databaseName = $helper->ask($input, $output, $question);
+        }else{
+            $databaseName = "";
+        }
 
         $projectDir = ROOT_PARENT_PATH.'/' . $projectName.'/'; //getcwd() . '/' . $projectName.'/';
 
@@ -47,7 +60,7 @@ class CreateProjectCommand extends Command
         // Create basic files
         $env = file_get_contents(__DIR__.'/../../templates/.env.template');
         $env = str_replace('{{APP_NAME}}', $projectName, $env);
-        $env = str_replace('{{DB_NAME}}', strtolower($projectName), $env);
+        $env = str_replace('{{DB_NAME}}', strtolower($databaseName), $env);
         $filesystem->dumpFile($projectDir . '.env', $env);
         $filesystem->dumpFile($projectDir . '.htaccess', file_get_contents(__DIR__.'/../../templates/.htaccess.template'));
         $filesystem->dumpFile($projectDir . 'public/index.php', file_get_contents(__DIR__.'/../../templates/public/index.php.template'));
