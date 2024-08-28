@@ -20,8 +20,7 @@ class EntityManagerCreator{
         );
  
         $conn = [
-            'driver' => $_ENV['DB_DRIVE'],
-            'path' => __DIR__ . '/../../'.$_ENV['DB_PATH'],
+            {{CONN_CONTENT}}
         ];
 
 

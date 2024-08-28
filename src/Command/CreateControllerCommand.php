@@ -29,7 +29,7 @@ class CreateControllerCommand extends Command
         $controllerName = $input->getArgument('name');
 
         $basicController = file_get_contents(__DIR__.'/../../templates/src/Controllers/BasicController.php.template');
-        $filesystem->dumpFile($projectDir . '/src/Controller/'.$controllerName, str_replace('{{CLASS_NAME}}', $controllerName, $basicController));
+        $filesystem->dumpFile($projectDir . '/src/Controller/'.$controllerName.'.php', str_replace('{{CLASS_NAME}}', $controllerName, $basicController));
 
         $output->writeln('<info>Controller created successfully.</info>');
         return Command::SUCCESS;
